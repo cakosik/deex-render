@@ -11,7 +11,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Update
 from aiogram.dispatcher.dispatcher import Dispatcher as LegacyDispatcher
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 import mysql.connector
 import re
 import os   
