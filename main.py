@@ -24,7 +24,15 @@ dp = Dispatcher()
 ADMIN_IDS = [8183369219 , 8181544644]  # ID всех админов
 MAIN_ADMIN_ID = 6194786755  # Главный админ
 app = FastAPI()
+dp = Dispatcher()
 
+app.post("/webhook")
+async def telegram_webhook(request: Request):
+    data = await request.json()
+    update = Update.model_validate(data)
+    await dp.feed_update(bot, update)
+    return {"ok": True}
+    
 # === Подключение к БД ===
 def connect_db():
     return mysql.connector.connect(
@@ -43,6 +51,7 @@ class PromoState(StatesGroup):
     name = State()
     skidka = State()
     uses = State()
+
 
 
 
