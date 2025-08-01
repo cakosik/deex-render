@@ -17,7 +17,13 @@ import re
 import os   
 import asyncio
 
-
+@app.post("/webhook")
+async def webhook_handler(request: Request):
+    data = await request.json()
+    update = Update.model_validate(data)
+    await dp.feed_update(bot, update)
+    return {"ok": True}
+    
 # ==== НАСТРОЙКИ ====
 BOT_TOKEN = "8112953231:AAHe0aRWs7fUfoUqaTXdc5bwBBqP0JZnUOE"
 WEBHOOK_URL = "https://deex-render.onrender.com/webhook"
@@ -26,12 +32,6 @@ MAIN_ADMIN_ID = 6194786755  # Главный админ
 app = FastAPI()
 dp = Dispatcher()
 
-app.post("/webhook")
-async def telegram_webhook(request: Request):
-    data = await request.json()
-    update = Update.model_validate(data)
-    await dp.feed_update(bot, update)
-    return {"ok": True}
     
 # === Подключение к БД ===
 def connect_db():
@@ -64,15 +64,6 @@ async def main():
     await dp.start_polling(bot)
 
 
-@app.post("/")
-async def telegram_webhook(request: Request):
-    try:
-        data = await request.json()
-        update = Update.to_object(data)
-        await dp.process_update(update)
-    except Exception as e:
-        print(f"Ошибка при обработке запроса: {e}")
-    return {"ok": True}
 
 # === НАСТРОЙКА БОТА ===
 bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
@@ -692,5 +683,6 @@ async def main():
     asyncio.create_task(check_new_purchases())
     await dp.start_polling(bot)
 
-if __name__ == '__main__':
-    asyncio.run(main())
+@app.on_event("startup")
+async def on_startup():
+    await bot.set_webhook("https://deex-render.onrender.com/webhook")
