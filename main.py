@@ -20,24 +20,33 @@ import asyncio
     
 # ==== НАСТРОЙКИ ====
 BOT_TOKEN = "8112953231:AAHe0aRWs7fUfoUqaTXdc5bwBBqP0JZnUOE"
-WEBHOOK_URL = "https://deex-render.onrender.com/webhook"
+WEBHOOK_PATH = "/webhook"
+WEBHOOK_URL = f"https://deex-render.onrender.com{WEBHOOK_PATH}"
 ADMIN_IDS = [8183369219 , 8181544644]  # ID всех админов
 MAIN_ADMIN_ID = 6194786755  # Главный админ
 dp = Dispatcher()
 
 app = FastAPI()
 
-@app.post("/webhook")
-async def webhook_handler(request: Request):
+@app.on_event("startup")
+async def on_startup():
+    await bot.set_webhook(WEBHOOK_URL)
+    print("✅ Webhook установлен!")
+
+@app.on_event("shutdown")
+async def on_shutdown():
+    await bot.delete_webhook()
+    print("❌ Webhook удалён!")
+
+@app.post(WEBHOOK_PATH)
+async def handle_webhook(request: Request):
     update = Update.model_validate(await request.json())
     await dp.feed_update(bot, update)
     return {"ok": True}
 
-
 @app.get("/")
 async def root():
     return {"status": "ok"}
-    
     
 # === Подключение к БД ===
 def connect_db():
