@@ -17,12 +17,6 @@ import re
 import os   
 import asyncio
 
-@app.post("/webhook")
-async def webhook_handler(request: Request):
-    data = await request.json()
-    update = Update.model_validate(data)
-    await dp.feed_update(bot, update)
-    return {"ok": True}
     
 # ==== НАСТРОЙКИ ====
 BOT_TOKEN = "8112953231:AAHe0aRWs7fUfoUqaTXdc5bwBBqP0JZnUOE"
@@ -32,6 +26,12 @@ MAIN_ADMIN_ID = 6194786755  # Главный админ
 app = FastAPI()
 dp = Dispatcher()
 
+@app.post("/webhook")
+async def webhook_handler(request: Request):
+    data = await request.json()
+    update = Update.model_validate(data)
+    await dp.feed_update(bot, update)
+    return {"ok": True}
     
 # === Подключение к БД ===
 def connect_db():
