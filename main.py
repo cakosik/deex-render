@@ -11,10 +11,12 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Update
 from aiogram.dispatcher.dispatcher import Dispatcher as LegacyDispatcher
+from fastapi import FastAPI
 import mysql.connector
 import re
 import os   
 import asyncio
+
 
 # === НАСТРОЙКИ ===
 BOT_TOKEN = "8112953231:AAHe0aRWs7fUfoUqaTXdc5bwBBqP0JZnUOE"
