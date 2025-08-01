@@ -23,19 +23,20 @@ BOT_TOKEN = "8112953231:AAHe0aRWs7fUfoUqaTXdc5bwBBqP0JZnUOE"
 WEBHOOK_URL = "https://deex-render.onrender.com/webhook"
 ADMIN_IDS = [8183369219 , 8181544644]  # ID всех админов
 MAIN_ADMIN_ID = 6194786755  # Главный админ
-app = FastAPI()
 dp = Dispatcher()
+
+app = FastAPI()
 
 @app.post("/webhook")
 async def webhook_handler(request: Request):
-    data = await request.json()
-    update = Update.model_validate(data)
+    update = Update.model_validate(await request.json())
     await dp.feed_update(bot, update)
     return {"ok": True}
 
+
 @app.get("/")
 async def root():
-    return {"status": "ok", "message": "Бот работает!"}
+    return {"status": "ok"}
     
     
 # === Подключение к БД ===
