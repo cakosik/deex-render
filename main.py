@@ -16,12 +16,12 @@ import re
 import os   
 import asyncio
 
-
 # === НАСТРОЙКИ ===
 BOT_TOKEN = "8112953231:AAHe0aRWs7fUfoUqaTXdc5bwBBqP0JZnUOE"
+dp = Dispatcher()
 ADMIN_IDS = [8183369219 , 8181544644]  # ID всех админов
 MAIN_ADMIN_ID = 6194786755  # Главный админ
-TOKEN = os.getenv("BOT_TOKEN")
+
 # === Подключение к БД ===
 def connect_db():
     return mysql.connector.connect(
@@ -41,9 +41,16 @@ class PromoState(StatesGroup):
     skidka = State()
     uses = State()
 
-# Создаём бота и диспетчер
-bot = Bot("TOKEN")
-dp = Dispatcher()  # без аргументов!
+
+
+@dp.message()
+async def echo(message: Message):
+    await message.answer(message.text)
+
+
+async def main():
+    await dp.start_polling(bot)
+
 
 @app.post("/")
 async def telegram_webhook(request: Request):
