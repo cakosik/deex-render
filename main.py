@@ -685,4 +685,5 @@ async def main():
 
 @app.on_event("startup")
 async def on_startup():
-    ###await bot.set_webhook("https://deex-render.onrender.com/webhook")
+    await bot.set_webhook("https://deex-render.onrender.com/webhook")
+    pass
