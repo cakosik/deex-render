@@ -33,12 +33,6 @@ async def webhook_handler(request: Request):
     await dp.feed_update(bot, update)
     return {"ok": True}
     
-@app.on_event("startup")
-async def on_startup():
-    webhook = await bot.get_webhook_info()
-    if webhook.url != "https://deex-render.onrender.com/webhook":
-        await bot.set_webhook("https://deex-render.onrender.com/webhook")
-
     
 # === Подключение к БД ===
 def connect_db():
