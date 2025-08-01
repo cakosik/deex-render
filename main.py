@@ -20,7 +20,7 @@ import asyncio
 
 # === НАСТРОЙКИ ===
 BOT_TOKEN = "8112953231:AAHe0aRWs7fUfoUqaTXdc5bwBBqP0JZnUOE"
-dp = Dispatcher()
+WEBHOOK_URL = "https://deex-render.onrender.com/webhook"
 ADMIN_IDS = [8183369219 , 8181544644]  # ID всех админов
 MAIN_ADMIN_ID = 6194786755  # Главный админ
 app = FastAPI()
