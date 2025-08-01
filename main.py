@@ -32,6 +32,10 @@ async def webhook_handler(request: Request):
     update = Update.model_validate(data)
     await dp.feed_update(bot, update)
     return {"ok": True}
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "Бот работает!"}
     
     
 # === Подключение к БД ===
@@ -686,4 +690,9 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=10000)
 
+
+from aiogram.webhook.fastapi import WebhookRequestHandler
+app.router.add_route("/webhook", WebhookRequestHandler(dp))
